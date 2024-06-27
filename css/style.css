@@ -6,6 +6,19 @@ body {
     margin: 0;
 }
 
+#sign-out-button {
+    background-color: #8b0000;
+    color: aliceblue;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  #sign-out-button:hover {
+    background-color: #a52a2a;
+  }
 
 /* Header */
 header {
