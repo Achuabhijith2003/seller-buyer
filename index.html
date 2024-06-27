@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,24 +24,21 @@
         </span>
     </a>
     <nav>
-        <a href="index.html"
-            style="  color: #856404; font-family: 'Roboto', sans-serif; font-weight: 500; font-style: normal;">Home</a>
-        <a href="Products.html"
-            style="  color: #856404;; font-family: 'Roboto', sans-serif; font-weight: 500; font-style: normal;">Products</a>
-        <!-- <a href="https://wa.link/ygjxgs" style="  color: #856404;; font-family: 'Roboto', sans-serif; font-weight: 500; font-style: normal;">Offers</a> -->
-        <a href="aboutus.html"
-            style="  color: #856404;; font-family: 'Roboto', sans-serif; font-weight: 500; font-style: normal;">About
-            us</a>
-        <a href="https://wa.link/ygjxgs"
-            style="  color: #856404;; font-family: 'Roboto', sans-serif; font-weight: 500; font-style: normal;">Contact
-            Us</a>
+        <a href="index.html" style="color: #856404; font-family: 'Roboto', sans-serif; font-weight: 500; font-style: normal;">Home</a>
+        <a href="Products.html" style="color: #856404; font-family: 'Roboto', sans-serif; font-weight: 500; font-style: normal;">Products</a>
+        <a href="aboutus.html" style="color: #856404; font-family: 'Roboto', sans-serif; font-weight: 500; font-style: normal;">About us</a>
+        <a href="https://wa.link/ygjxgs" style="color: #856404; font-family: 'Roboto', sans-serif; font-weight: 500; font-style: normal;">Contact Us</a>
     </nav>
+    <div id="auth-button-container">
+        <button id="login-button" style="display: none;">Login</button>
+        <img id="profile-icon" src="images/profile-icon.png" alt="Profile Icon" style="display: none;">
+    </div>
     <button id="menu-toggle" class="menu-toggle">
         <span class="bar"></span>
         <span class="bar"></span>
         <span class="bar"></span>
     </button>
-</header>
+</header> 
 
 <body>
     <!------------------------------------------------------Footer---------------------------------------------------->
@@ -87,6 +83,7 @@
         </div>
     </footer>
     <script src="js/Script.js"></script>
+    <script type="module" src="js/db/emailauth/authState.js"></script>
 </body>
 
 </html>
