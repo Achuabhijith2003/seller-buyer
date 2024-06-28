@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller-Buyer Platform</title>
+    <!-- External stylesheets -->
+    <link rel="stylesheet" href="css/profile.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+    <!-- Firebase SDK if needed -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script> -->
+    <!-- Firebase authentication -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script> -->
+    <!-- Firebase firestore -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script> -->
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <img src="images/logo.png" alt="Seller-Buyer Logo">
+        </div>
+        <div class="user-controls">
+            <button id="switch-account">Switch Account</button>
+            <button id="sign-out">Sign Out</button>
+            <button id="add-product">Add Product</button>
+            <button id="view-history">View History</button>
+        </div>
+    </header>
+
+    <main>
+        <section id="seller-dashboard">
+            <h2>Seller Dashboard</h2>
+            <form id="product-form">
+                <input type="text" id="product-name" placeholder="Product Name" required>
+                <input type="number" id="product-cost" placeholder="Product Cost" required>
+                <input type="file" id="product-images" accept="image/*" multiple required>
+                <button type="submit">Add Product</button>
+            </form>
+        </section>
+
+        <section id="buyer-history">
+            <h2>Buyer's Purchase History</h2>
+            <ul id="purchase-list"></ul>
+        </section>
+
+        <section id="communication">
+            <h2>Contact Sellers</h2>
+            <form id="contact-form">
+                <textarea id="message" placeholder="Your message to seller" required></textarea>
+                <button type="submit">Send Message</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Seller-Buyer Platform. All rights reserved.</p>
+    </footer>
+
+    <!-- External JavaScript -->
+    <script src="js/firebaseinit.js"></script>
+    <script src="js/db/profile/profile.js"></script>
+</body>
+
+</html>
