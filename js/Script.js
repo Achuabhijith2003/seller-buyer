@@ -1,11 +1,14 @@
 // --------------nav menu --------------------
+
+// Get elements
 const menuToggle = document.getElementById('menu-toggle');
-const nav = document.querySelector('nav');
+const navMenu = document.querySelector('nav');
 
 menuToggle.addEventListener('click', () => {
-  menuToggle.classList.toggle('open');
-  nav.classList.toggle('show');
+    menuToggle.classList.toggle('active');
+    navMenu.classList.toggle('active');
 });
+
 
 
 // --------------nav menu --------------------
