@@ -83,6 +83,59 @@ nav a:hover {
     }
 }
 
+/* search bar */
+/* Default styles */
+.search-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+#search-bar {
+    width: 60%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px 0 0 4px;
+}
+
+#search-button {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-left: 0;
+    background-color: #856404;
+    color: white;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+}
+
+#search-button i {
+    font-size: 16px;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+    #img.bd-title {
+        position: relative;
+        left: -125px;
+    }
+    
+    .search-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #search-bar {
+        width: 80%;
+        margin-bottom: 10px;
+    }
+
+    #search-button {
+        width: 80%;
+        border-radius: 4px;
+    }
+}
+
+
 /* menu toggle */
 /* Style for the menu toggle button */
 .menu-toggle {
