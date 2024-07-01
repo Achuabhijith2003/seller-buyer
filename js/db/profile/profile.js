@@ -17,6 +17,9 @@ const emailInput = document.getElementById('email');
 const genderSelect = document.getElementById('gender');
 const editButton = document.getElementById('edit-button');
 const saveButton = document.getElementById('save-button');
+const addAddressButton = document.getElementById('add-address-button');
+const addressForm = document.getElementById('address-form');
+const useMyLocationButton = document.getElementById('use-my-location');
 
 onAuthStateChanged(auth, async (user) => {
     if (user) {
@@ -95,15 +98,93 @@ accountForm.addEventListener('submit', async (e) => {
     }
 });
 
+addAddressButton.addEventListener('click', () => {
+    addressForm.style.display = 'block';
+});
+
+addressForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const user = auth.currentUser;
+    if (user) {
+        const addressData = {
+            name: document.getElementById('address-name').value,
+            phoneNumber: document.getElementById('phone-number').value,
+            pincode: document.getElementById('pincode').value,
+            locality: document.getElementById('locality').value,
+            address: document.getElementById('address').value,
+            city: document.getElementById('city').value,
+            state: document.getElementById('state').value
+        };
+
+        // Validate that all fields are filled
+        if (!addressData.name || !addressData.phoneNumber || !addressData.pincode || !addressData.locality || !addressData.address || !addressData.city || !addressData.state) {
+            alert('Please fill in all fields before submitting.');
+            return;
+        }
+
+        try {
+            await updateDoc(doc(db, "users", user.uid), {
+                address: addressData
+            });
+            alert('Address added successfully.');
+        } catch (error) {
+            console.error('Error adding address:', error);
+            alert('Failed to add address.');
+        }
+    }
+});
+
+useMyLocationButton.addEventListener('click', () => {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(async (position) => {
+            const { latitude, longitude } = position.coords;
+            const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=YOUR_GOOGLE_MAPS_API_KEY`);
+            const data = await response.json();
+            if (data.results.length > 0) {
+                const addressComponents = data.results[0].address_components;
+                addressComponents.forEach(component => {
+                    const types = component.types;
+                    if (types.includes('locality')) {
+                        document.getElementById('city').value = component.long_name;
+                    } else if (types.includes('administrative_area_level_1')) {
+                        document.getElementById('state').value = component.long_name;
+                    } else if (types.includes('postal_code')) {
+                        document.getElementById('pincode').value = component.long_name;
+                    }
+                });
+            }
+        }, (error) => {
+            console.error('Error getting location:', error);
+            alert('Failed to get location.');
+        });
+    } else {
+        alert('Geolocation is not supported by this browser.');
+    }
+});
+
 async function loadUserData(uid) {
     const userDoc = await getDoc(doc(db, "users", uid));
-    if (userDoc.exists()) {
-        const userData = userDoc.data();
-        firstNameInput.value = userData.firstName || '';
-        lastNameInput.value = userData.lastName || '';
-        emailInput.value = userData.email || '';
-        genderSelect.value = userData.gender || '';
-    } else {
-        console.log('No such document!');
+    try {
+        if (userDoc.exists()) { 
+            const userData = userDoc.data();
+            firstNameInput.value = userData.firstName || '';
+            lastNameInput.value = userData.lastName || '';
+            emailInput.value = userData.email || '';
+            genderSelect.value = userData.gender || '';
+            if (userData.address) {
+                document.getElementById('address-name').value = userData.address.name || '';
+                document.getElementById('phone-number').value = userData.address.phoneNumber || '';
+                document.getElementById('pincode').value = userData.address.pincode || '';
+                document.getElementById('locality').value = userData.address.locality || '';
+                document.getElementById('address').value = userData.address.address || '';
+                document.getElementById('city').value = userData.address.city || '';
+                document.getElementById('state').value = userData.address.state || '';
+            }
+        } else {
+            console.log('No such document!');
+        }
+    } catch (error) {
+        console.log(error.messgae);
+        alert(error.messgae);
     }
 }

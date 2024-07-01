@@ -130,3 +130,39 @@ header {
 .profile-section button:hover {
     opacity: 0.8;
 }
+
+
+/* addreee   */
+.profile-section form {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-section label {
+    margin-top: 10px;
+}
+
+.profile-section input,
+.profile-section textarea,
+.profile-section select {
+    padding: 5px;
+    margin-top: 5px;
+    width: 50%;
+}
+
+.profile-section button {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #856404;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.profile-section button:hover {
+    opacity: 0.8;
+}
+
+#address-form {
+    display: none;
+}
