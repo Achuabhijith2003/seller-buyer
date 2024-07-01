@@ -1,66 +1,109 @@
-// Initialize Firebase if needed
-// import { auth, firestore } from './firebaseinit.js';
+import { auth } from '../firebaseinit.js';
+import { onAuthStateChanged , signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
-document.addEventListener('DOMContentLoaded', function () {
-    const switchAccountBtn = document.getElementById('switch-account');
-    const signOutBtn = document.getElementById('sign-out');
-    const addProductForm = document.getElementById('product-form');
-    const productNameInput = document.getElementById('product-name');
-    const productCostInput = document.getElementById('product-cost');
-    const productImagesInput = document.getElementById('product-images');
-    const purchaseList = document.getElementById('purchase-list');
-    const contactForm = document.getElementById('contact-form');
-    const messageTextarea = document.getElementById('message');
+const db = getFirestore();
+const loginButton = document.getElementById('login-button');
+const profileIcon = document.getElementById('profile-icon');
+const logoutButton = document.getElementById('logout-button');
+const switchAccountButton = document.getElementById('switch-account');
+const userNameDisplay = document.getElementById('user-name');
+const profileOptions = document.querySelectorAll('.profile-option');
+const profileSections = document.querySelectorAll('.profile-section');
+const accountForm = document.getElementById('account-form');
+const firstNameInput = document.getElementById('first-name');
+const lastNameInput = document.getElementById('last-name');
+const emailInput = document.getElementById('email');
+const genderSelect = document.getElementById('gender');
+const editButton = document.getElementById('edit-button');
+const saveButton = document.getElementById('save-button');
 
-    // Event listeners
-    switchAccountBtn.addEventListener('click', switchAccount);
-    signOutBtn.addEventListener('click', signOut);
-    addProductForm.addEventListener('submit', addProduct);
-    contactForm.addEventListener('submit', sendMessage);
-
-    // Function to switch between Seller and Buyer mode
-    function switchAccount() {
-        // Implement logic to switch account type (seller/buyer)
-        console.log('Switching account type...');
+onAuthStateChanged(auth, async (user) => {
+    if (user) {
+        loginButton.style.display = 'none';
+        profileIcon.style.display = 'block';
+        userNameDisplay.textContent = user.displayName || user.email;
+        await loadUserData(user.uid);
+    } else {
+        loginButton.style.display = 'block';
+        profileIcon.style.display = 'none';
     }
-
-    // Function to sign out
-    function signOut() {
-        // Implement sign out logic (Firebase auth)
-        console.log('Signing out...');
-    }
-
-    // Function to add a product
-    function addProduct(e) {
-        e.preventDefault();
-        const productName = productNameInput.value;
-        const productCost = productCostInput.value;
-        const productImages = productImagesInput.files;
-
-        // Implement logic to add product to Firestore and upload images
-        console.log('Adding product:', productName, productCost, productImages);
-    }
-
-    // Function to send a message
-    function sendMessage(e) {
-        e.preventDefault();
-        const message = messageTextarea.value;
-
-        // Implement logic to send message to seller (Firestore or other backend)
-        console.log('Sending message:', message);
-    }
-
-    // Function to fetch and display purchase history (for buyer)
-    function fetchPurchaseHistory() {
-        // Implement logic to fetch purchase history from Firestore
-        const purchases = ['Product 1', 'Product 2', 'Product 3']; // Example data
-        purchases.forEach(product => {
-            const li = document.createElement('li');
-            li.textContent = product;
-            purchaseList.appendChild(li);
-        });
-    }
-
-    // Fetch initial data on page load
-    fetchPurchaseHistory();
 });
+
+logoutButton.addEventListener('click', () => {
+    signOut(auth).then(() => {
+        window.location.href = 'index.html';
+    }).catch((error) => {
+        console.error('Logout Error:', error);
+    });
+});
+
+switchAccountButton.addEventListener('click', () => {
+    if (switchAccountButton.textContent.includes('Seller')) {
+        sellerSection.style.display = 'block';
+        buyerSection.style.display = 'none';
+        switchAccountButton.textContent = 'Switch to Buyer';
+    } else {
+        sellerSection.style.display = 'none';
+        buyerSection.style.display = 'block';
+        switchAccountButton.textContent = 'Switch to Seller';
+    }
+});
+
+profileOptions.forEach(option => {
+    option.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = option.getAttribute('data-option');
+        profileSections.forEach(section => {
+            section.style.display = 'none';
+        });
+        document.getElementById(target).style.display = 'block';
+    });
+});
+
+editButton.addEventListener('click', () => {
+    firstNameInput.disabled = false;
+    lastNameInput.disabled = false;
+    emailInput.disabled = false;
+    genderSelect.disabled = false;
+    editButton.style.display = 'none';
+    saveButton.style.display = 'inline-block';
+});
+
+accountForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const user = auth.currentUser;
+    if (user) {
+        try {
+            await updateDoc(doc(db, "users", user.uid), {
+                firstName: firstNameInput.value,
+                lastName: lastNameInput.value,
+                email: emailInput.value,
+                gender: genderSelect.value
+            });
+            alert('Profile updated successfully.');
+        } catch (error) {
+            console.error('Error updating profile:', error);
+            alert('Failed to update profile.');
+        }
+        firstNameInput.disabled = true;
+        lastNameInput.disabled = true;
+        emailInput.disabled = true;
+        genderSelect.disabled = true;
+        editButton.style.display = 'inline-block';
+        saveButton.style.display = 'none';
+    }
+});
+
+async function loadUserData(uid) {
+    const userDoc = await getDoc(doc(db, "users", uid));
+    if (userDoc.exists()) {
+        const userData = userDoc.data();
+        firstNameInput.value = userData.firstName || '';
+        lastNameInput.value = userData.lastName || '';
+        emailInput.value = userData.email || '';
+        genderSelect.value = userData.gender || '';
+    } else {
+        console.log('No such document!');
+    }
+}

@@ -1,67 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seller-Buyer Platform</title>
-    <!-- External stylesheets -->
-    <link rel="stylesheet" href="css/profile.css">
-    <!-- Font Awesome for icons -->
+    <title>Profile</title>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
-    <!-- Firebase SDK if needed -->
-    <!-- <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script> -->
-    <!-- Firebase authentication -->
-    <!-- <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script> -->
-    <!-- Firebase firestore -->
-    <!-- <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script> -->
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/profile.css">
+    <link rel="icon" href="image/logo2.jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sedan+SC&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
 </head>
-
 <body>
     <header>
-        <div class="logo">
-            <img src="images/logo.png" alt="Seller-Buyer Logo">
-        </div>
-        <div class="user-controls">
-            <button id="switch-account">Switch Account</button>
-            <button id="sign-out">Sign Out</button>
-            <button id="add-product">Add Product</button>
-            <button id="view-history">View History</button>
+        <div class="top-bar">
+            <a class="navbar-brand" href="index.html">
+                <img src="image/logo2.jpg" alt="seller-buyer Logo">
+            </a>
+            <div class="search-container">
+                <input type="text" id="search-bar" placeholder="Search...">
+                <button id="search-button"><i class="fas fa-search"></i></button>
+            </div>
+            <div id="auth-button-container">
+                <a href="Login.html"><button id="login-button">Login</button></a>
+                <button id="sign-out-button" style="display: none;">Sign Out</button>
+                <a href="profile.html"><img id="profile-icon" src="image/Icons/profile icon.png" alt="Profile Icon" style="display: none;"></a>
+                <button id="cart-button"><i class="fas fa-shopping-cart"></i></button>
+            </div>
         </div>
     </header>
 
     <main>
-        <section id="seller-dashboard">
-            <h2>Seller Dashboard</h2>
-            <form id="product-form">
-                <input type="text" id="product-name" placeholder="Product Name" required>
-                <input type="number" id="product-cost" placeholder="Product Cost" required>
-                <input type="file" id="product-images" accept="image/*" multiple required>
-                <button type="submit">Add Product</button>
-            </form>
-        </section>
+        <div class="profile-header">
+            <h1>Welcome, <span id="user-name"></span></h1>
+            <button id="switch-account" class="btn btn-primary" style="margin-left: auto;">Switch to Seller</button>
+            <button id="logout-button" class="btn btn-danger">Logout</button>
+        </div>
 
-        <section id="buyer-history">
-            <h2>Buyer's Purchase History</h2>
-            <ul id="purchase-list"></ul>
-        </section>
+        <div class="profile-content">
+            <div class="sidebar">
+                <ul>
+                    <li><a href="#" class="profile-option" data-option="account">Account</a></li>
+                    <li><a href="#" class="profile-option" data-option="address">Address</a></li>
+                    <li><a href="#" class="profile-option" data-option="payment">Payment</a></li>
+                    <li><a href="#" class="profile-option" data-option="purchase-history">Purchase History</a></li>
+                    <li><a href="#" class="profile-option" data-option="conversations">Conversations</a></li>
+                </ul>
+            </div>
 
-        <section id="communication">
-            <h2>Contact Sellers</h2>
-            <form id="contact-form">
-                <textarea id="message" placeholder="Your message to seller" required></textarea>
-                <button type="submit">Send Message</button>
-            </form>
-        </section>
+            <div class="details">
+                <div id="account" class="profile-section">
+                    <h2>Account Information</h2>
+                    <form id="account-form">
+                        <label for="first-name">First Name:</label>
+                        <input type="text" id="first-name" name="first-name" disabled>
+                        <label for="last-name">Last Name:</label>
+                        <input type="text" id="last-name" name="last-name" disabled>
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" disabled>
+                        <label for="gender">Gender:</label>
+                        <select id="gender" name="gender" disabled>
+                            <option value="">Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <button type="button" id="edit-button" >Edit</button>
+                        <button type="submit" id="save-button" style="display: none;">Save</button>
+                    </form>
+                </div>
+                
+                
+                <div id="address" class="profile-section" style="display: none;">
+                    <h2>Address Information</h2>
+                    <p>Details about the address...</p>
+                </div>
+                <div id="payment" class="profile-section" style="display: none;">
+                    <h2>Payment Information</h2>
+                    <p>Details about the payment methods...</p>
+                </div>
+                <div id="purchase-history" class="profile-section" style="display: none;">
+                    <h2>Purchase History</h2>
+                    <p>List of purchased items...</p>
+                </div>
+                <div id="conversations" class="profile-section" style="display: none;">
+                    <h2>Conversations</h2>
+                    <p>Conversations with sellers...</p>
+                </div>
+            </div>
+        </div>
     </main>
 
-    <footer>
-        <p>&copy; 2024 Seller-Buyer Platform. All rights reserved.</p>
-    </footer>
+        <!------------------------------------------------------Footer---------------------------------------------------->
+        <footer class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="footer-col">
+                        <h4>Snaphub</h4>
+                        <ul>
+                            <li><a href="aboutus.html">about us</a></li>
+                            <li><a href="aboutus.html">our services</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Pages</h4>
+                        <ul>
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="Products.html">Products</a></li>
 
-    <!-- External JavaScript -->
-    <script src="js/firebaseinit.js"></script>
-    <script src="js/db/profile/profile.js"></script>
-</body>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Contact Us</h4>
+                        <ul>
+                            <!-- <li><a href="mailto:hopeshore.in@gmail.com">hopeshore.in@gmail.com</a></li> -->
+                            <li><a href="tel:+918074786868">+918074786868</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h4>follow us</h4>
+                        <div class="social-links">
+                            <a href="https://www.facebook.com/HopeShoreKadalundi?mibextid=kFxxJD"><i
+                                    class="fab fa-facebook-f"></i></a>
+                            <a href="https://x.com/HopeshoreIn?t=oJVwRHd3RBivepdB2pIB2w&s=09"><i
+                                    class="fab fa-twitter"></i></a>
+                            <a href="https://www.instagram.com/hopeshore_?igsh=d250enp1dTV2djFr&utm_source=qr"><i
+                                    class="fab fa-instagram"></i></a>
+                            <!-- <a href="https://wa.link/ygjxgs"><i class="fab fa-linkedin-in"></i></a> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <script src="js/Script.js"></script>
+        <script type="module" src="js/db/emailauth/authState.js"></script>
+        <script type="module" src="js/db/profile/profile.js"></script>
+    </body>
 
 </html>
