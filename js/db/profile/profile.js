@@ -1,5 +1,5 @@
 import { auth } from '../firebaseinit.js';
-import { onAuthStateChanged , signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
 const db = getFirestore();
@@ -111,10 +111,13 @@ addressForm.addEventListener('submit', async (e) => {
             phoneNumber: document.getElementById('phone-number').value,
             pincode: document.getElementById('pincode').value,
             locality: document.getElementById('locality').value,
-            address: document.getElementById('address').value,
+            address: document.getElementById('address-address').value,
             city: document.getElementById('city').value,
             state: document.getElementById('state').value
         };
+
+        // Log address data to check values
+        console.log('Address Data:', addressData);
 
         // Validate that all fields are filled
         if (!addressData.name || !addressData.phoneNumber || !addressData.pincode || !addressData.locality || !addressData.address || !addressData.city || !addressData.state) {
@@ -164,27 +167,22 @@ useMyLocationButton.addEventListener('click', () => {
 
 async function loadUserData(uid) {
     const userDoc = await getDoc(doc(db, "users", uid));
-    try {
-        if (userDoc.exists()) { 
-            const userData = userDoc.data();
-            firstNameInput.value = userData.firstName || '';
-            lastNameInput.value = userData.lastName || '';
-            emailInput.value = userData.email || '';
-            genderSelect.value = userData.gender || '';
-            if (userData.address) {
-                document.getElementById('address-name').value = userData.address.name || '';
-                document.getElementById('phone-number').value = userData.address.phoneNumber || '';
-                document.getElementById('pincode').value = userData.address.pincode || '';
-                document.getElementById('locality').value = userData.address.locality || '';
-                document.getElementById('address').value = userData.address.address || '';
-                document.getElementById('city').value = userData.address.city || '';
-                document.getElementById('state').value = userData.address.state || '';
-            }
-        } else {
-            console.log('No such document!');
+    if (userDoc.exists()) {
+        const userData = userDoc.data();
+        firstNameInput.value = userData.firstName || '';
+        lastNameInput.value = userData.lastName || '';
+        emailInput.value = userData.email || '';
+        genderSelect.value = userData.gender || '';
+        if (userData.address) {
+            document.getElementById('address-name').value = userData.address.name || '';
+            document.getElementById('phone-number').value = userData.address.phoneNumber || '';
+            document.getElementById('pincode').value = userData.address.pincode || '';
+            document.getElementById('locality').value = userData.address.locality || '';
+            document.getElementById('address').value = userData.address.address || '';
+            document.getElementById('city').value = userData.address.city || '';
+            document.getElementById('state').value = userData.address.state || '';
         }
-    } catch (error) {
-        console.log(error.messgae);
-        alert(error.messgae);
+    } else {
+        console.log('No such document!');
     }
 }
