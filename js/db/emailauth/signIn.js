@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Logged in
                 const user = userCredential.user;
                 console.log('Logged In:', user);
-                window.location.href = 'index.html';
+                window.location.href = '../index.html';
             })
             .catch((error) => {
                 if (error.message == "Firebase: Error (auth/invalid-login-credentials).") {
@@ -42,7 +42,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Logged in
                 const user = result.user;
                 console.log('Logged In:', user);
-                window.location.href = 'index.html';
+                window.location.href = '../index.html';
+
             })
             .catch((error) => {
                 alert(error.message);
